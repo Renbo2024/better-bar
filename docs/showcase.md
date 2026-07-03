@@ -28,8 +28,9 @@ monitor, pick an edge, stack the widgets you want in the order you want them.
   <img src="images/taskbar-buttons_weather_clock.png" alt="Task buttons in two rows with readable labels, next to a weather widget and clock." width="100%">
 </p>
 
-One button per window. With a **label**. In **two rows**, if you like: a feature
-Windows shipped for two decades and then decided you'd outgrown. Buttons shrink
+One button per window. With a **label**. In **as many rows as you like**: one,
+two (pictured), or more if your bar is tall enough. Multi-row is a feature Windows
+shipped for two decades and then decided you'd outgrown. Buttons shrink
 gracefully when the bar fills up, a configurable priority order pins your important
 apps to the front, and the Windows 11-style accent underline is yours to restyle
 (thickness, colors, widths). Or set it to zero and pretend the 2020s never happened.
@@ -51,6 +52,22 @@ and ranked by **frecency** so the things you actually use float to the top. Defi
 What it will not do: suggest a web search, recommend an app you didn't ask for, or
 show you "content." It's a start menu, not a storefront. The lone **Windows key**
 opens it, and every Win+key combo (Win+E, Win+R, ...) still passes through untouched.
+
+## Quick Launch. Remember Quick Launch?
+
+<p align="center">
+  <img src="images/the-launcher.png" alt="A launcher: a two-row grid of one-click app shortcuts sitting next to the start button.">
+</p>
+
+Microsoft deleted it in Windows 7, left a registry seance to bring it back, then
+took even that away when Windows 11 dropped taskbar toolbars. BetterBar just...
+has it. A **Launcher** is a grid of one-click shortcuts sourced from any folder you
+choose: set the rows, icon size, and spacing, **drag to reorder** (the order sticks),
+and **drag files in** from Explorer to add them. Right-click gives you the real
+Explorer context menu (Open, Copy, Properties, ...) plus a Hide command for icons
+you want gone without deleting anything.
+
+Put one next to the start button like it's 2006. We won't tell.
 
 ## Weather that opens... weather
 
@@ -112,9 +129,6 @@ run four bars, top and bottom. It's your desktop.
 
 Not pictured above, but in the box:
 
-- **Quick Launch / Launchers**: a grid of shortcuts from any folder, drag-to-reorder,
-  drag-in from Explorer, real shell context menus. Yes, *that* Quick Launch. Back
-  from the dead.
 - **System Tray**: BetterBar hosts the real Windows notification area, on its own
   thread so a burst of startup icons never freezes the bar.
 - **Audio Control**: speaker and mic buttons with live level meters (smoothed and
