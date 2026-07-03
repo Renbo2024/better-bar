@@ -20,6 +20,9 @@ present features, but those are beginning to disappear and become unsupported.
 > Third-party components and their licenses are listed in
 > [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
+Prefer pictures? See the **[visual showcase](docs/showcase.md)** for screenshots of
+BetterBar in action.
+
 ---
 
 ## Table of contents
