@@ -58,6 +58,8 @@
             <ui:CardControl.Header>
                 <StackPanel>
                     <TextBlock Text="Updates" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock x:Name="UpdateVersion" FontSize="12" Margin="0,2,0,0"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                     <TextBlock x:Name="UpdateStatus" TextWrapping="Wrap"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
                                Text="Check GitHub for a newer version of BetterBar."/>

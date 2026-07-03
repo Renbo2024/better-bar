@@ -344,10 +344,11 @@ already have, so you can merge selectively.
 ### Software updates
 
 When BetterBar is **installed** (from the [Releases](https://github.com/Renbo2024/better-bar/releases)
-`Setup.exe`), it updates itself from GitHub Releases. On startup it checks in the background and quietly
-downloads any newer version; the **Updates** card then shows **"Restart to update"**, and **Check for
-updates** looks right away. Updates apply on the next restart. When you're running **from source** (not
-installed), there's nothing to update, so the button is disabled.
+`Setup.exe`), it updates itself from GitHub Releases. The **Updates** card shows your **installed
+version**. On startup it checks in the background and quietly downloads any newer version; the card then
+shows **"Restart to update"**, and **Check for updates** looks right away. Updates apply on the next
+restart. When you're running **from source** (not installed), there's nothing to update, so the button is
+disabled and the card shows that no version is installed.
 
 ### Re-run the setup wizard (testing aid)
 
