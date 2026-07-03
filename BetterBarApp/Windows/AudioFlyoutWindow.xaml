@@ -1,0 +1,24 @@
+<Window x:Class="BetterBarApp.Windows.AudioFlyoutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+        Topmost="True" WindowStartupLocation="Manual">
+    <Border Background="#F0232323" CornerRadius="8" Padding="12" Width="300"
+            BorderBrush="#33FFFFFF" BorderThickness="1"
+            TextElement.Foreground="#FFFFFFFF">
+        <StackPanel>
+            <TextBlock x:Name="HeaderText" FontWeight="SemiBold" Margin="2,0,0,8"/>
+            <ListBox x:Name="DeviceList" MaxHeight="220" Background="Transparent" BorderThickness="0"
+                     Foreground="#FFFFFFFF" DisplayMemberPath="Name"
+                     SelectionChanged="DeviceList_SelectionChanged"/>
+            <DockPanel Margin="0,12,0,0">
+                <ui:Button x:Name="MuteButton" DockPanel.Dock="Left" Appearance="Transparent"
+                           Margin="0,0,8,0" Padding="6,2" Click="Mute_Click"/>
+                <Slider x:Name="LevelSlider" Minimum="0" Maximum="100" VerticalAlignment="Center"
+                        ValueChanged="Level_ValueChanged"/>
+            </DockPanel>
+        </StackPanel>
+    </Border>
+</Window>

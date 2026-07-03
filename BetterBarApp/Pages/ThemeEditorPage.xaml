@@ -1,0 +1,47 @@
+<Page x:Class="BetterBarApp.Pages.ThemeEditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Theme editor">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Appearance" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Theme editor" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <!-- Theme selector + actions -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <ComboBox x:Name="ThemeCombo" MinWidth="220" DisplayMemberPath="Name"
+                      SelectionChanged="ThemeCombo_SelectionChanged" VerticalAlignment="Center"/>
+            <ui:Button Icon="{ui:SymbolIcon Copy24}"   Content="Clone"  Click="Clone_Click"  Margin="10,0,0,0"/>
+            <ui:Button Icon="{ui:SymbolIcon Add24}"    Content="New"    Click="New_Click"    Margin="6,0,0,0"/>
+            <ui:Button Content="Import" Click="Import_Click" Margin="6,0,0,0"/>
+            <ui:Button Content="Export" Click="Export_Click" Margin="6,0,0,0"/>
+            <ui:Button x:Name="DeleteBtn" Icon="{ui:SymbolIcon Delete24}" Content="Delete"
+                       Click="Delete_Click" Margin="6,0,0,0"/>
+        </StackPanel>
+
+        <!-- Name + built-in notice -->
+        <Grid Grid.Row="3" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Name" VerticalAlignment="Center" Width="60"/>
+                <ui:TextBox x:Name="NameBox" MinWidth="240"
+                            LostKeyboardFocus="NameBox_Commit" KeyDown="NameBox_KeyDown"/>
+            </StackPanel>
+            <TextBlock x:Name="BuiltInNote" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Text="Built-in theme — clone it to make an editable copy."
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+        </Grid>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="4" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="RowsHost"/>
+        </ScrollViewer>
+    </Grid>
+</Page>

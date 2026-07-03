@@ -1,0 +1,39 @@
+<UserControl x:Class="BetterBarApp.Controls.StartButtonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch">
+    <!--
+        The button uses the themed TaskButton style so hover state matches the
+        dark panel. Path fill is bound to TaskBtnFg so colors follow the theme;
+        Stretch="Uniform" on the geometry keeps the icon square as the button resizes.
+        Layout (Width, Margin, icon padding) is set in code from SizeChanged.
+    -->
+    <!--
+        AllowDrop and drag handlers are NOT here. External-file drops are handled
+        at the PanelWindow level (window-level drop target + visual hit-test) — see
+        PanelWindow.Window_DragOver. Per-button AllowDrop on a templated Button
+        was unreliable because the template's inner Border/ContentPresenter kept
+        intercepting hit-tests.
+    -->
+    <Button x:Name="StartBtn"
+            Style="{StaticResource TaskButton}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Click="StartBtn_Click">
+        <!--
+            IsHitTestVisible=False is the key to drop-target behavior:
+            in WPF the element directly under the cursor must have AllowDrop=true
+            for drag events to fire on it OR its ancestors. With this set, the
+            Path doesn't intercept hit-tests, so the Button (AllowDrop=True) is
+            the cursor's target and DragEnter/Over/Drop fire correctly. Clicks
+            still register on the Button because the Path occupies its Content
+            area and hit-test passes through to the Button behind.
+        -->
+        <Path x:Name="StartIcon"
+              Data="{StaticResource StartIconGeometry}"
+              Fill="{DynamicResource TaskBtnFg}"
+              Stretch="Uniform"
+              IsHitTestVisible="False"/>
+    </Button>
+</UserControl>

@@ -1,0 +1,61 @@
+<ui:FluentWindow x:Class="BetterBarApp.Windows.ExportConfigWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:w="clr-namespace:BetterBarApp.Windows"
+                 Title="Export configuration"
+                 Icon="pack://application:,,,/app.ico"
+                 Width="460" Height="560" MinWidth="380" MinHeight="380"
+                 ExtendsContentIntoTitleBar="True" WindowBackdropType="Mica"
+                 WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Export configuration">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/app.ico"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <TextBlock Grid.Row="1" Margin="16,4,16,8" TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                   Text="Choose the themes and bar definitions to include in the export file."/>
+
+        <TreeView x:Name="Tree" Grid.Row="2" Margin="16,0" Background="Transparent" BorderThickness="0">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type w:TransferNode}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title}" Margin="6,0,0,0" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCategory}" Value="True">
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="16,12,16,16">
+            <ui:Button Content="Export…" Appearance="Primary" Click="Export_Click" Margin="0,0,8,0"/>
+            <ui:Button Content="Cancel" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>

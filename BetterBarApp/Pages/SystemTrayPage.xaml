@@ -1,0 +1,81 @@
+<Page x:Class="BetterBarApp.Pages.SystemTrayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="System Tray">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="System Tray" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Shows the notification-area icons. The clock is handled by the Clock item; the sound icon by the Audio Control item."
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                           TextWrapping="Wrap" Margin="2,0,0,10"/>
+
+                <ui:CardControl Icon="{ui:SymbolIcon TextBulletListLtr24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Rows" VerticalAlignment="Center"/>
+                            <TextBlock Text="How many rows of icons to stack within the bar's height."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="RowsBox" Minimum="1" Maximum="5" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon AutoFitWidth24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Icon spacing (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Gap between adjacent tray icons."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="SpacingBox" Minimum="0" Maximum="40" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon ResizeLarge24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Outer margin (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Empty space kept around the whole icon group."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="MarginBox" Minimum="0" Maximum="40" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon SpeakerMute24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Exclude the sound icon" VerticalAlignment="Center"/>
+                            <TextBlock Text="Hide the volume icon (the Audio Control item already provides it)."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ExcludeSoundBox" Click="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon MicOff24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Exclude the microphone icon" VerticalAlignment="Center"/>
+                            <TextBlock Text="Hide the microphone-in-use icon from the tray."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ExcludeMicBox" Click="Changed"/>
+                </ui:CardControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

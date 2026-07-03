@@ -1,0 +1,41 @@
+﻿<Application x:Class="BetterBarApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BetterBarApp"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- WPF-UI is the app-wide default so the Fluent settings app themes
+                     correctly (including pages inside the NavigationView's Frame).
+                     The taskbar opts back into its own look by merging Win11Styles
+                     (implicit styles) at the window level. -->
+                <ui:ThemesDictionary Theme="Dark"/>
+                <ui:ControlsDictionary/>
+
+                <!-- Active theme (palette) — ThemeService swaps this entry at runtime
+                     (matched by its ThemeName marker); see Themes/. -->
+                <ResourceDictionary Source="Themes/Dark.xaml"/>
+                <!-- Keyed taskbar resources (fonts, shadows, TaskButton, PrimaryButton)
+                     referenced via StaticResource; keyed so they don't clash with WPF-UI. -->
+                <ResourceDictionary Source="Resources/Win11Base.xaml"/>
+                <ResourceDictionary Source="Resources/StartIcon.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Clickable controls in the settings app show the hand cursor. BasedOn the WPF-UI
+                 NAMED base styles (not the implicit {x:Type} keys, which our own implicit styles
+                 would shadow into a self-reference and drop the template). Bar-item buttons set
+                 their own cursor via BarIconButton/TaskButton. -->
+            <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+            <Style TargetType="{x:Type ui:ToggleSwitch}" BasedOn="{StaticResource DefaultUiToggleSwitchStyle}">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

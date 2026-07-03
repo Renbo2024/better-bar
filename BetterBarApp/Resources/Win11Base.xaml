@@ -1,0 +1,225 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:controls="clr-namespace:BetterBarApp.Controls"
+                    mc:Ignorable="po">
+
+    <!--
+        Taskbar resources that are KEYED (not implicit) and theme-independent. These stay
+        merged app-wide because taskbar controls reference them via StaticResource at parse
+        time (e.g. NumericBox → Body, StartButtonControl → TaskButton). Being keyed, they do
+        NOT collide with WPF-UI's implicit styles, so the settings app is unaffected. The
+        IMPLICIT control styles live in Win11Styles.xaml, which is merged only into the
+        taskbar windows so it doesn't override WPF-UI inside the settings app.
+    -->
+
+    <!-- ===== Fonts ===== -->
+    <FontFamily x:Key="Body">Segoe UI Variable Text, Segoe UI, sans-serif</FontFamily>
+    <FontFamily x:Key="Display">Segoe UI Variable Display, Segoe UI, sans-serif</FontFamily>
+
+    <!-- ===== Shadows (frozen) ===== -->
+    <DropShadowEffect x:Key="CardShadow"  Color="Black" Opacity="0.08"
+                      BlurRadius="12" ShadowDepth="2" Direction="270" po:Freeze="True"/>
+    <DropShadowEffect x:Key="PopupShadow" Color="Black" Opacity="0.14"
+                      BlurRadius="10" ShadowDepth="3" Direction="270" po:Freeze="True"/>
+
+    <!-- ===== Button (primary / accent) — keyed ===== -->
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="FontFamily"      Value="{StaticResource Body}"/>
+        <Setter Property="FontSize"        Value="13"/>
+        <Setter Property="Padding"         Value="16,0"/>
+        <Setter Property="MinHeight"       Value="32"/>
+        <Setter Property="MinWidth"        Value="60"/>
+        <Setter Property="Background"      Value="{DynamicResource Accent}"/>
+        <Setter Property="BorderBrush"     Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground"      Value="White"/>
+        <Setter Property="Cursor"          Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            MinHeight="{TemplateBinding MinHeight}"
+                            MinWidth="{TemplateBinding MinWidth}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentHover}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentPress}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===== TaskButton — running-window button on the panel — keyed ===== -->
+    <Style x:Key="TaskButton" TargetType="Button">
+        <Setter Property="FontFamily"       Value="{StaticResource Body}"/>
+        <Setter Property="FontSize"         Value="12"/>
+        <Setter Property="Foreground"       Value="{DynamicResource TaskBtnFg}"/>
+        <Setter Property="Background"       Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="MinWidth"         Value="0"/>
+        <Setter Property="MinHeight"        Value="0"/>
+        <Setter Property="Padding"          Value="6,0"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!-- Layered so the hover tint can fade independently of the (active) background
+                         and stays beneath the content. -->
+                    <Grid SnapsToDevicePixels="True">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{DynamicResource TaskButtonCornerRadius}"/>
+                        <Border x:Name="Hover"
+                                Background="{DynamicResource TaskBtnHoverBg}"
+                                CornerRadius="{DynamicResource TaskButtonCornerRadius}"
+                                Opacity="0" IsHitTestVisible="False"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover highlight fades in/out rather than snapping. -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
+                                                         To="1" Duration="0:0:0.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.22"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <!-- The running/active accent bar is drawn per-button by TaskButtonsControl
+                             (configurable thickness + colour); the template only tints the active fill. -->
+                        <Trigger Property="controls:TaskButtonState.IsActive" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource TaskBtnActiveBg}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Shared transparent icon button for bar items (Launcher, System Tray, Power, Audio):
+         hand cursor, content centred, and the same fade-in/out hover highlight as task buttons. -->
+    <Style x:Key="BarIconButton" TargetType="Button">
+        <Setter Property="Background"       Value="Transparent"/>
+        <Setter Property="Foreground"       Value="{DynamicResource TaskBtnFg}"/>
+        <Setter Property="BorderThickness"  Value="0"/>
+        <Setter Property="Padding"          Value="0"/>
+        <Setter Property="MinWidth"         Value="0"/>
+        <Setter Property="MinHeight"        Value="0"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment"   Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True"
+                          TextElement.Foreground="{TemplateBinding Foreground}">
+                        <Border x:Name="Hover"
+                                Background="{DynamicResource TaskBtnHoverBg}"
+                                CornerRadius="{DynamicResource TaskButtonCornerRadius}"
+                                Opacity="0" IsHitTestVisible="False"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RenderTransformOrigin="0.5,0.5">
+                            <!-- Two independent scales compose (they multiply): a gentle grow on hover
+                                 and a quick depress on click. Keeping them separate stops one trigger
+                                 from fighting the other over a single ScaleTransform. -->
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="HoverScale" ScaleX="1" ScaleY="1"/>
+                                    <ScaleTransform x:Name="PressScale" ScaleX="1" ScaleY="1"/>
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
+                                                         To="1" Duration="0:0:0.15"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleX"
+                                                         To="1.08" Duration="0:0:0.15"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleY"
+                                                         To="1.08" Duration="0:0:0.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.22"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleX"
+                                                         To="1" Duration="0:0:0.22"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleY"
+                                                         To="1" Duration="0:0:0.22"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <!-- Click feedback: quick depress, then a slightly slower spring back to full size. -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PressScale" Storyboard.TargetProperty="ScaleX"
+                                                         To="0.86" Duration="0:0:0.05"/>
+                                        <DoubleAnimation Storyboard.TargetName="PressScale" Storyboard.TargetProperty="ScaleY"
+                                                         To="0.86" Duration="0:0:0.05"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PressScale" Storyboard.TargetProperty="ScaleX"
+                                                         To="1" Duration="0:0:0.13"/>
+                                        <DoubleAnimation Storyboard.TargetName="PressScale" Storyboard.TargetProperty="ScaleY"
+                                                         To="1" Duration="0:0:0.13"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

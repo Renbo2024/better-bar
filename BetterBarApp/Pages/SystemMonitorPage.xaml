@@ -1,0 +1,244 @@
+<Page x:Class="BetterBarApp.Pages.SystemMonitorPage"
+      x:Name="Root"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="System Monitor">
+    <Page.Resources>
+
+        <!-- CPU-specific settings (common width/title/subtitle/colour live in the outer card). -->
+        <DataTemplate x:Key="CpuExtras">
+            <StackPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Scroll mode" Width="150" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding ScrollModes, RelativeSource={RelativeSource AncestorType=Page}}"
+                              SelectedItem="{Binding ScrollMode, Mode=TwoWay}" Width="160" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Sample rate" Width="150" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding SampleRates, RelativeSource={RelativeSource AncestorType=Page}}"
+                              SelectedItem="{Binding SampleRateMs, Mode=TwoWay}" Width="160" HorizontalAlignment="Left"
+                              ItemStringFormat="{}{0} ms"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Time span (seconds)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding TimeSpanSec, Mode=TwoWay}" Minimum="5" Maximum="600" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Graph color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding Color, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Fill opacity (%)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding OpacityPercent, Mode=TwoWay}" Minimum="1" Maximum="100" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Grid (10 × 4, static)" Width="150" VerticalAlignment="Center"/>
+                    <ui:ToggleSwitch IsChecked="{Binding ShowGrid, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Grid color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding GridColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Network-specific settings. -->
+        <DataTemplate x:Key="NetExtras">
+            <StackPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Interface" Width="150" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding Nics, RelativeSource={RelativeSource AncestorType=Page}}"
+                              DisplayMemberPath="Name" SelectedValuePath="Id"
+                              SelectedValue="{Binding InterfaceId, Mode=TwoWay}" MinWidth="220" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Scroll mode" Width="150" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding ScrollModes, RelativeSource={RelativeSource AncestorType=Page}}"
+                              SelectedItem="{Binding ScrollMode, Mode=TwoWay}" Width="160" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Sample rate" Width="150" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding SampleRates, RelativeSource={RelativeSource AncestorType=Page}}"
+                              SelectedItem="{Binding SampleRateMs, Mode=TwoWay}" Width="160" HorizontalAlignment="Left"
+                              ItemStringFormat="{}{0} ms"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Time span (seconds)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding TimeSpanSec, Mode=TwoWay}" Minimum="5" Maximum="600" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Total fill color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding TotalColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Total fill opacity (%)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding TotalOpacityPercent, Mode=TwoWay}" Minimum="1" Maximum="100" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Receive line color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding ReceiveColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Receive line opacity (%)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding ReceiveOpacityPercent, Mode=TwoWay}" Minimum="1" Maximum="100" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Send line color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding SendColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Send line opacity (%)" Width="150" VerticalAlignment="Center"/>
+                    <controls:NumericBox Value="{Binding SendOpacityPercent, Mode=TwoWay}" Minimum="1" Maximum="100" Step="5" Width="120" HorizontalAlignment="Left"/>
+                </DockPanel>
+
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Bandwidth grid" Width="150" VerticalAlignment="Center"/>
+                    <ui:ToggleSwitch IsChecked="{Binding ShowGrid, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Grid color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding GridColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" Margin="150,0,0,4">
+                    <CheckBox Content="10 Mbps"  IsChecked="{Binding ShowBand10M,  Mode=TwoWay}" Margin="0,0,12,0"/>
+                    <CheckBox Content="100 Mbps" IsChecked="{Binding ShowBand100M, Mode=TwoWay}" Margin="0,0,12,0"/>
+                    <CheckBox Content="1 Gbps"   IsChecked="{Binding ShowBand1G,   Mode=TwoWay}" Margin="0,0,12,0"/>
+                    <CheckBox Content="10 Gbps"  IsChecked="{Binding ShowBand10G,  Mode=TwoWay}"/>
+                </StackPanel>
+
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Average line" Width="150" VerticalAlignment="Center"/>
+                    <ui:ToggleSwitch IsChecked="{Binding ShowAverage, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <DockPanel Margin="0,4">
+                    <TextBlock Text="Average line color" Width="150" VerticalAlignment="Center"/>
+                    <controls:ColorPickerButton Value="{Binding AverageColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </DockPanel>
+            </StackPanel>
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="System Monitor" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- ── Layout ── -->
+                <TextBlock Text="Layout" FontWeight="SemiBold" Margin="2,0,0,6"/>
+                <ui:CardControl Margin="0,0,0,8">
+                    <ui:CardControl.Header><TextBlock Text="Spacing between widgets (px)" VerticalAlignment="Center"/></ui:CardControl.Header>
+                    <controls:NumericBox Value="{Binding Spacing, Mode=TwoWay}" Minimum="0" Maximum="60" Step="1" MinWidth="120"/>
+                </ui:CardControl>
+                <ui:CardControl Margin="0,0,0,8">
+                    <ui:CardControl.Header><TextBlock Text="Side margins (px)" VerticalAlignment="Center"/></ui:CardControl.Header>
+                    <controls:NumericBox Value="{Binding SideMargin, Mode=TwoWay}" Minimum="0" Maximum="60" Step="1" MinWidth="120"/>
+                </ui:CardControl>
+                <ui:CardControl Margin="0,0,0,16">
+                    <ui:CardControl.Header><TextBlock Text="Top / bottom margins (px)" VerticalAlignment="Center"/></ui:CardControl.Header>
+                    <controls:NumericBox Value="{Binding VerticalMargin, Mode=TwoWay}" Minimum="0" Maximum="40" Step="1" MinWidth="120"/>
+                </ui:CardControl>
+
+                <!-- ── Widgets ── -->
+                <DockPanel Margin="2,0,0,6">
+                    <TextBlock Text="Widgets" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ui:Button Icon="{ui:SymbolIcon Add24}" Content="Add CPU monitor" Click="AddCpu_Click" Margin="0,0,8,0"/>
+                        <ui:Button Icon="{ui:SymbolIcon Add24}" Content="Add network monitor" Click="AddNetwork_Click"/>
+                    </StackPanel>
+                </DockPanel>
+                <TextBlock Text="Drawn left-to-right in this order. In a title/subtitle, %value% shows the CPU value; %receive% / %send% / %total% show network rates."
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" Margin="2,0,0,8" TextWrapping="Wrap"/>
+
+                <ItemsControl x:Name="WidgetsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:CardExpander Margin="0,0,0,8">
+                                <ui:CardExpander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding TypeName}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon ArrowUp24}"   Click="MoveUp_Click"   ToolTip="Move left"/>
+                                            <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon ArrowDown24}" Click="MoveDown_Click" ToolTip="Move right" Margin="0,0,8,0"/>
+                                            <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon Delete24}"    Click="Remove_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </ui:CardExpander.Header>
+
+                                <StackPanel Margin="0,4,0,0">
+                                    <!-- common -->
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Width (px)" Width="150" VerticalAlignment="Center"/>
+                                        <controls:NumericBox Value="{Binding Width, Mode=TwoWay}" Minimum="20" Maximum="600" Step="5" Width="120" HorizontalAlignment="Left"/>
+                                    </DockPanel>
+
+                                    <!-- title (painted over the top of the visual) -->
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Title" Width="150" VerticalAlignment="Center"/>
+                                        <ui:TextBox Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="220"/>
+                                    </DockPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="150,0,0,4">
+                                        <ComboBox ItemsSource="{Binding Fonts, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                  SelectedItem="{Binding TitleFontFamily, Mode=TwoWay}" Width="160" Margin="0,0,8,0"/>
+                                        <controls:NumericBox Value="{Binding TitleFontSize, Mode=TwoWay}" Minimum="6" Maximum="48" Step="1" Width="90"/>
+                                    </StackPanel>
+
+                                    <!-- subtitle (painted over the bottom of the visual) -->
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Subtitle" Width="150" VerticalAlignment="Center"/>
+                                        <ui:TextBox Text="{Binding Subtitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="220"/>
+                                    </DockPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="150,0,0,4">
+                                        <ComboBox ItemsSource="{Binding Fonts, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                  SelectedItem="{Binding SubtitleFontFamily, Mode=TwoWay}" Width="160" Margin="0,0,8,0"/>
+                                        <controls:NumericBox Value="{Binding SubtitleFontSize, Mode=TwoWay}" Minimum="6" Maximum="48" Step="1" Width="90"/>
+                                    </StackPanel>
+
+                                    <!-- text colour (shared by title + subtitle) -->
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Text color" Width="150" VerticalAlignment="Center"/>
+                                        <controls:ColorPickerButton Value="{Binding TextColor, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Text shadow" Width="150" VerticalAlignment="Center"/>
+                                        <ui:ToggleSwitch IsChecked="{Binding TextShadow, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="0,4">
+                                        <TextBlock Text="Text shadow size (px)" Width="150" VerticalAlignment="Center"/>
+                                        <controls:NumericBox Value="{Binding TextShadowSize, Mode=TwoWay}" Minimum="0" Maximum="40" Step="1" Width="120" HorizontalAlignment="Left"/>
+                                    </DockPanel>
+
+                                    <!-- type-specific -->
+                                    <ContentControl Content="{Binding}" HorizontalContentAlignment="Stretch">
+                                        <ContentControl.ContentTemplateSelector>
+                                            <controls:MonitorWidgetTemplateSelector
+                                                CpuTemplate="{StaticResource CpuExtras}"
+                                                NetworkTemplate="{StaticResource NetExtras}"/>
+                                        </ContentControl.ContentTemplateSelector>
+                                    </ContentControl>
+                                </StackPanel>
+                            </ui:CardExpander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

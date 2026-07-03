@@ -1,0 +1,10 @@
+<UserControl x:Class="BetterBarApp.Controls.ClockControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch"
+             Background="Transparent" Cursor="Hand"
+             ToolTip="Open the calendar"
+             MouseLeftButtonUp="OnClick">
+    <!-- Lines (time / date / time zone) are created and ordered in code from ClockItem. -->
+    <StackPanel x:Name="Stack" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+</UserControl>

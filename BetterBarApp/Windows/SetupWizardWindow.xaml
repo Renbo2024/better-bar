@@ -1,0 +1,200 @@
+<ui:FluentWindow x:Class="BetterBarApp.Windows.SetupWizardWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:controls="clr-namespace:BetterBarApp.Controls"
+                 Title="Set up BetterBar"
+                 Icon="pack://application:,,,/app.ico"
+                 Width="560" Height="660" MinWidth="480" MinHeight="520"
+                 ExtendsContentIntoTitleBar="True" WindowBackdropType="Mica"
+                 WindowStartupLocation="CenterScreen">
+    <Grid TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Set up BetterBar">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/app.ico"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <!-- Header: step title + progress -->
+        <StackPanel Grid.Row="1" Margin="24,4,24,8">
+            <TextBlock x:Name="StepTitle" FontSize="24" FontWeight="SemiBold"/>
+            <TextBlock x:Name="StepCounter" FontSize="12" Margin="0,2,0,8"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <ProgressBar x:Name="StepProgress" Height="3" Minimum="0"/>
+        </StackPanel>
+
+        <!-- Body: one step visible at a time -->
+        <Grid Grid.Row="2" Margin="24,4,24,0">
+
+            <!-- 0 · Welcome -->
+            <ScrollViewer x:Name="StepWelcome" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Let's build your first bar. We'll ask a few quick questions and then place a bar along the bottom of your primary monitor. You can change everything later in Settings."/>
+                    <TextBlock Text="Bar height" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" Margin="0,0,0,6"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="How tall the bar is, in pixels."/>
+                    <controls:NumericBox Minimum="24" Maximum="200" Step="2" MinWidth="120"
+                                         HorizontalAlignment="Left" Value="{Binding HeightPx}"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="A taller bar gives every item more room, and it matters most for Quick Launch and Task Buttons: both can use more than one row, and each row takes an equal share of the bar's height. So on a short bar the icons and buttons get small fast — under about 60px, more than one row looks cramped. If you plan to use two rows anywhere, 60px or more is a good starting point; a single-row bar is comfortable around 40px."/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 1 · Start Button -->
+            <ScrollViewer x:Name="StepStart" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="The Start Button opens a menu with a search box. Choose what its search should look through."/>
+                    <CheckBox Content="Installed apps" Margin="0,4" IsChecked="{Binding SearchApps}"/>
+                    <CheckBox Content="Windows Settings pages" Margin="0,4" IsChecked="{Binding SearchSettings}"/>
+                    <CheckBox Content="Documents" Margin="0,4" IsChecked="{Binding SearchDocuments}"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 2 · Quick Launch -->
+            <ScrollViewer x:Name="StepQuickLaunch" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="A Quick Launch area shows a grid of shortcuts from a folder you choose. This is optional."/>
+                    <ui:ToggleSwitch Content="Include a Quick Launch area" Margin="0,0,0,10"
+                                     IsChecked="{Binding IncludeQuickLaunch}"/>
+                    <StackPanel IsEnabled="{Binding IncludeQuickLaunch}">
+                        <TextBlock Text="Shortcuts folder" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" VerticalAlignment="Center"
+                                     Text="{Binding QuickLaunchFolder, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:Button Grid.Column="1" Content="Browse…" Margin="8,0,0,0" Click="BrowseQuickLaunch_Click"/>
+                        </Grid>
+                        <TextBlock x:Name="QuickLaunchWarning" Margin="0,6,0,0" TextWrapping="Wrap"
+                                   Visibility="Collapsed" Foreground="#FFE0A030"
+                                   Text="Choose a shortcuts folder to continue (or turn off Quick Launch above)."/>
+                        <TextBlock Text="Rows" FontWeight="SemiBold" Margin="0,12,0,4"/>
+                        <controls:NumericBox Minimum="1" Maximum="3" Step="1" MinWidth="120"
+                                             HorizontalAlignment="Left" Value="{Binding QuickLaunchRows}"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="Shortcuts are arranged into this many rows, filling the top row left-to-right and then the next. The icons shrink to fit — each row takes an equal slice of the bar's height, so more rows means smaller icons (two rows is roughly half the height of one). On a bar shorter than about 60px, more than one row starts to look quite small — you can raise the bar height on the first page."/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 3 · Task Buttons -->
+            <ScrollViewer x:Name="StepTasks" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Task Buttons show one button per open window, like the classic taskbar. They grow to fill the free space on the bar."/>
+                    <CheckBox Content="Show windows from all monitors (off = this monitor only)"
+                              Margin="0,4" IsChecked="{Binding TaskAllMonitors}"/>
+                    <TextBlock Text="Rows" FontWeight="SemiBold" Margin="0,12,0,4"/>
+                    <controls:NumericBox Minimum="1" Maximum="3" Step="1" MinWidth="120"
+                                         HorizontalAlignment="Left" Value="{Binding TaskRows}"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Task buttons stack into this many rows, and each row takes an equal slice of the bar's height — so more rows means shorter buttons. When the bar fills up, buttons first shrink toward their minimum width and then wrap into the extra rows. On a bar shorter than about 60px, more than one row looks quite small — you can raise the bar height on the first page."/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 4 · Audio -->
+            <ScrollViewer x:Name="StepAudio" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Audio Control adds speaker and microphone buttons with live level meters and device pickers. This is optional."/>
+                    <ui:ToggleSwitch Content="Include audio controls" Margin="0,0,0,10"
+                                     IsChecked="{Binding IncludeAudio}"/>
+                    <StackPanel IsEnabled="{Binding IncludeAudio}">
+                        <CheckBox Content="Speaker" Margin="0,4" IsChecked="{Binding AudioSpeaker}"/>
+                        <CheckBox Content="Microphone" Margin="0,4" IsChecked="{Binding AudioMicrophone}"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="A microphone meter opens a capture stream, so Windows shows the “microphone in use” indicator while it's on the bar."/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 5 · System Tray -->
+            <ScrollViewer x:Name="StepTray" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="The System Tray hosts the Windows notification-area icons (the ones that normally sit by the clock)."/>
+                    <TextBlock Text="Rows" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                    <controls:NumericBox Minimum="1" Maximum="3" Step="1" MinWidth="120"
+                                         HorizontalAlignment="Left" Value="{Binding TrayRows}"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 6 · Clock -->
+            <ScrollViewer x:Name="StepClock" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="A Clock shows the time (and optionally the date), and opens a calendar when clicked. This is optional."/>
+                    <ui:ToggleSwitch Content="Include a clock" Margin="0,0,0,10"
+                                     IsChecked="{Binding IncludeClock}"/>
+                    <StackPanel IsEnabled="{Binding IncludeClock}">
+                        <CheckBox Content="Show the date" Margin="0,4" IsChecked="{Binding ClockShowDate}"/>
+                        <CheckBox Content="Use 24-hour time" Margin="0,4" IsChecked="{Binding Clock24Hour}"/>
+                        <CheckBox Content="Show seconds" Margin="0,4" IsChecked="{Binding ClockShowSeconds}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 7 · Theme -->
+            <ScrollViewer x:Name="StepTheme" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Pick a colour theme for the bar and start menu. You can create your own themes later in Settings."/>
+                    <ListBox x:Name="ThemeList" Background="Transparent" BorderThickness="0"
+                             SelectionChanged="ThemeList_SelectionChanged"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 8 · Summary -->
+            <ScrollViewer x:Name="StepSummary" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Here's what will be created. Choosing Finish places this bar along the bottom of your primary monitor, replacing any bar already there."/>
+                    <Border CornerRadius="6" Padding="14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                        <TextBlock x:Name="SummaryText" TextWrapping="Wrap"/>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Footer: navigation -->
+        <Grid Grid.Row="3" Margin="24,12,24,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ui:Button Grid.Column="0" x:Name="BackButton" Content="Back" Click="Back_Click"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <ui:Button Content="Cancel" Click="Cancel_Click" Margin="0,0,8,0"/>
+                <ui:Button x:Name="NextButton" Content="Next" Appearance="Primary" Click="Next_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

@@ -1,0 +1,50 @@
+<Window x:Class="BetterBarApp.Windows.LocationSearchDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Find a location"
+        Icon="pack://application:,,,/app.ico"
+        Width="440" Height="430"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <!-- Plain controls picked up by the implicit Win11Styles (themed); WPF-UI controls aren't
+         themed in a non-Fluent window and render their text invisibly on blur. -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Win11Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel Margin="20,16,20,16">
+
+        <TextBlock DockPanel.Dock="Top" Text="Find a location"
+                   FontFamily="Segoe UI Variable Display, Segoe UI"
+                   FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,2">
+            <Button x:Name="SearchButton" DockPanel.Dock="Right" Content="Search"
+                    Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Click="Search_Click"/>
+            <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"/>
+        </DockPanel>
+
+        <ProgressBar x:Name="SearchProgress" DockPanel.Dock="Top" Height="3" Margin="0,6,0,4"
+                     IsIndeterminate="True" Visibility="Collapsed"
+                     Background="Transparent" BorderThickness="0"
+                     Foreground="{DynamicResource Accent}"/>
+
+        <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Margin="0,8,0,0"
+                   FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Margin="0,12,0,0">
+            <Button Content="OK" Style="{StaticResource PrimaryButton}" IsDefault="True"
+                    Margin="0,0,8,0" Click="OK_Click"/>
+            <Button Content="Cancel" IsCancel="True" Click="Cancel_Click"/>
+        </StackPanel>
+
+        <ListBox x:Name="ResultsList" DisplayMemberPath="Display" Margin="0,8,0,0"
+                 MouseDoubleClick="Results_DoubleClick"/>
+
+    </DockPanel>
+</Window>

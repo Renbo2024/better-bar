@@ -1,0 +1,15 @@
+<UserControl x:Class="BetterBarApp.Controls.LauncherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch"
+             ClipToBounds="True">
+    <!--
+        Canvas with explicit coordinates replaces WrapPanel.
+        WrapPanel's wrapping logic is sensitive to margin arithmetic errors;
+        Canvas positioning is computed directly from the spec formula and is exact.
+        OuterBorder ClipToBounds prevents overflow if the window shrinks.
+    -->
+    <Border x:Name="OuterBorder" ClipToBounds="True">
+        <Canvas x:Name="IconPanel"/>
+    </Border>
+</UserControl>

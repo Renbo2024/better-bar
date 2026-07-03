@@ -1,0 +1,11 @@
+<UserControl x:Class="BetterBarApp.Controls.SystemTrayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch"
+             ClipToBounds="True">
+    <!-- Same layout engine as LauncherControl: a Border (margin via Padding) holding a Canvas
+         whose cells are positioned by the row-major grid formula. -->
+    <Border x:Name="OuterBorder" ClipToBounds="True">
+        <Canvas x:Name="IconPanel"/>
+    </Border>
+</UserControl>
