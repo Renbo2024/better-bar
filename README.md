@@ -365,8 +365,9 @@ BetterBarApp.exe --setup
 ```
 
 Completing the wizard **replaces any bar(s) on the bottom of your primary monitor** with the new one
-(bars on other edges/monitors are left untouched); cancelling changes nothing. If BetterBar is already
-running, this launches a separate wizard instance.
+(bars on other edges/monitors are left untouched); cancelling changes nothing. BetterBar runs as a
+**single instance**, so **close it first** — a second copy (including one launched with `--setup`) won't
+start while one is already running.
 
 ---
 
