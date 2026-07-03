@@ -10,11 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		CONTRIBUTING.md = CONTRIBUTING.md
-		FIRST-PUBLISH-RUNBOOK.md = FIRST-PUBLISH-RUNBOOK.md
 		LICENSE = LICENSE
-		pack.ps1 = pack.ps1
 		README.md = README.md
-		RELEASING.md = RELEASING.md
 		THIRD-PARTY-NOTICES.md = THIRD-PARTY-NOTICES.md
 	EndProjectSection
 EndProject

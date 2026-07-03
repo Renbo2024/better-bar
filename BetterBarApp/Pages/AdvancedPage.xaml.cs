@@ -17,6 +17,11 @@ public partial class AdvancedPage : Page
 
     private void InitUpdateCard()
     {
+        // Always show which version is running.
+        UpdateVersion.Text = UpdateService.IsInstalled
+            ? $"Installed version {UpdateService.CurrentVersion}"
+            : "Running from source — no installed version";
+
         if (!UpdateService.IsInstalled)
         {
             // Running unpackaged (e.g. `dotnet run`) — there's nothing to update.
@@ -32,7 +37,7 @@ public partial class AdvancedPage : Page
             return;
         }
 
-        UpdateStatus.Text = $"Current version {UpdateService.CurrentVersion}. Check GitHub for a newer version.";
+        UpdateStatus.Text = "Check GitHub for a newer version.";
     }
 
     private void ShowReady(string? version)
@@ -62,7 +67,7 @@ public partial class AdvancedPage : Page
         }
         else
         {
-            UpdateStatus.Text = $"You're on the latest version ({UpdateService.CurrentVersion}).";
+            UpdateStatus.Text = "You're on the latest version.";
             UpdateButton.IsEnabled = true;
         }
     }
