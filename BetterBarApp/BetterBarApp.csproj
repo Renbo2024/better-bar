@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- Per-Monitor-V2 DPI awareness (see app.manifest). Required for ManagedShell
+         AppBar positioning; overrides the System-aware default that UseWindowsForms
+         would otherwise apply. We set it in the manifest (OS-level, applied before
+         any managed code) rather than via WinForms' Application.SetHighDpiMode,
+         since this is a WPF app that never calls ApplicationConfiguration.Initialize.
+         WFAC010 warns about that choice; suppress it. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+    <!-- Use our explicit Main (Program.Main) so Velopack's hooks run before WPF starts. This
+         supersedes the entry point WPF would auto-generate from App.xaml (ApplicationDefinition). -->
+    <StartupObject>BetterBarApp.Program</StartupObject>
+  </PropertyGroup>
+
+  <!-- Remove WinForms implicit usings that conflict with WPF namespaces -->
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="ManagedShell" Version="0.0.337" />
+    <PackageReference Include="MdXaml" Version="1.27.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2.3" />
+    <PackageReference Include="Velopack" Version="1.2.0" />
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+  </ItemGroup>
+
+  <!-- Ship the README so the in-app Help tab can render it (read from the assembly manifest). -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\README.md" Link="README.md" LogicalName="BetterBarApp.README.md" />
+  </ItemGroup>
+
+  <!-- The app icon is both the exe icon (ApplicationIcon) and a WPF resource, so windows, dialogs,
+       and menus can show it via pack://application:,,,/app.ico. -->
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+</Project>

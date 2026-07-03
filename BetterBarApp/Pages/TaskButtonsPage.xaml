@@ -1,0 +1,188 @@
+<Page x:Class="BetterBarApp.Pages.TaskButtonsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="Task Buttons">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Task Buttons" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Desktop24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show windows from" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show only this monitor's windows, or windows from every monitor."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ComboBox x:Name="MonitorCombo" MinWidth="180" SelectionChanged="Changed">
+                        <ComboBoxItem Content="This monitor"/>
+                        <ComboBoxItem Content="All monitors"/>
+                    </ComboBox>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon TextBulletListLtr24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Rows" VerticalAlignment="Center"/>
+                            <TextBlock Text="How many rows of buttons to stack within the bar's height."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="RowsBox" Minimum="1" Maximum="5" Step="1"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon ResizeLarge24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Max button width (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="The widest a button gets; buttons shrink below this to fit when space runs out."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="MaxWidthBox" Minimum="40" Maximum="400" Step="10"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon TextboxAlignMiddle24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Text margin (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Empty space kept around each button's text label."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="TextMarginBox" Minimum="0" Maximum="40" Step="1"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon AutoFitWidth24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Horizontal spacing between buttons (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Gap kept between adjacent button columns. Row (vertical) spacing is fixed."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="HorizontalSpacingBox" Minimum="0" Maximum="40" Step="1"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon ArrowSortDownLines24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Priority order" VerticalAlignment="Center"/>
+                            <TextBlock Text="Comma-separated; matches (by title or app) sort first, in this order."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:TextBox x:Name="PriorityBox" MinWidth="260" PlaceholderText="firefox, rdp, code"
+                                TextChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon ArrowExpand24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Grow to fill remaining space" VerticalAlignment="Center"/>
+                            <TextBlock Text="Let this bar expand to take up the panel's leftover width."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="GrowBox" Click="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon LineThickness24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Accent bar thickness (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Height of the underline drawn beneath each button (0 hides it)."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="AccentThicknessBox" Minimum="0" Maximum="12" Step="1"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon Color24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Accent bar color" VerticalAlignment="Center"/>
+                            <TextBlock Text="Color of the underline; Default uses the theme accent color."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:ColorPickerButton x:Name="AccentColorPicker" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon Color24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Unselected accent bar color" VerticalAlignment="Center"/>
+                            <TextBlock Text="Underline color for background (unfocused) windows; Default is a theme grey that suits the bar."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:ColorPickerButton x:Name="UnselectedAccentColorPicker" ShowAlpha="True" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon RatioOneToOne24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Selected bar width (% of button)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Underline width for the focused window, as a percentage of the button."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="SelectedPillBox" Minimum="0" Maximum="100" Step="5"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon RatioOneToOne24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Unselected bar width (% of button)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Underline width for background (running) windows, as a percentage of the button."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="UnselectedPillBox" Minimum="0" Maximum="100" Step="5"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon Comment24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show hover tooltips" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show each window's title in a tip that follows the cursor while hovering a button."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="TooltipsBox" Click="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon Timer24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Tooltip delay (ms)" VerticalAlignment="Center"/>
+                            <TextBlock Text="How long to hover before the tip appears (only when tooltips are on)."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="TooltipDelayBox" Minimum="0" Maximum="5000" Step="100"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

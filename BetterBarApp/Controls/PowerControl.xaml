@@ -1,0 +1,8 @@
+<UserControl x:Class="BetterBarApp.Controls.PowerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch">
+    <Border x:Name="Outer">
+        <StackPanel x:Name="Host" Orientation="Horizontal" VerticalAlignment="Stretch"/>
+    </Border>
+</UserControl>

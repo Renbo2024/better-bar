@@ -1,0 +1,143 @@
+<Page x:Class="BetterBarApp.Pages.PowerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="Power">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Power" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <TextBlock Text="Buttons" FontWeight="SemiBold" Margin="2,0,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon Power24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Power (shut down)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show a button that shuts the computer down."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowPowerBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon ArrowClockwise24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Reboot (restart)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show a button that restarts the computer."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowRebootBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Bed24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Hibernate" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="HibernateNote" FontSize="12"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowHibernateBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Sleep24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Sleep" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show a button that puts the computer to sleep."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowSleepBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon SignOut24}" Margin="0,0,0,16">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Log Off" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show a button that signs the current user out."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowLogOffBox" Click="Changed"/>
+                </ui:CardControl>
+
+                <TextBlock Text="Appearance" FontWeight="SemiBold" Margin="2,0,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon TextCaseTitle24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show text labels" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show the action name beneath each icon."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowLabelsBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon FontIncrease24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Icon size (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Size of each action's glyph."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="IconSizeBox" Minimum="8" Maximum="64" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon AutoFitWidth24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Icon spacing (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Gap between adjacent action buttons."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="SpacingBox" Minimum="0" Maximum="60" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon ResizeLarge24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Outer margin (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Empty space kept around the whole button group."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="MarginBox" Minimum="0" Maximum="60" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon TextFont24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Label font" VerticalAlignment="Center"/>
+                            <TextBlock Text="Font family and size for the text labels."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="FontCombo" Width="180" Margin="0,0,8,0" SelectionChanged="Changed"/>
+                        <controls:NumericBox x:Name="FontSizeBox" Minimum="6" Maximum="32" Step="1" Width="90" ValueChanged="Changed"/>
+                    </StackPanel>
+                </ui:CardControl>
+
+                <TextBlock Text="Safety" FontWeight="SemiBold" Margin="2,8,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon Warning24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Confirm before acting" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ask for confirmation before a power action runs."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ConfirmBox" Click="Changed"/>
+                </ui:CardControl>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,57 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        BetterBar start icon — quarter-disc with a B-leaning left spine.
+        Coordinate space is a 0..100 square; use Stretch="Uniform" to scale.
+
+        Two ways to consume it:
+
+        1) Tintable (recommended for a taskbar button so it can follow the
+           system accent / theme):
+
+               <Path Data="{StaticResource StartIconGeometry}"
+                     Fill="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"
+                     Stretch="Uniform" Width="20" Height="20" />
+
+           Swap Fill for any brush (e.g. an accent brush, or simply White).
+
+        2) Fixed white image, matching the on-screen preview:
+
+               <Image Source="{StaticResource StartIcon}"
+                      Width="20" Height="20" />
+
+        To make these available app-wide, merge this file in App.xaml:
+
+               <Application.Resources>
+                   <ResourceDictionary>
+                       <ResourceDictionary.MergedDictionaries>
+                           <ResourceDictionary Source="StartIcon.xaml" />
+                       </ResourceDictionary.MergedDictionaries>
+                   </ResourceDictionary>
+               </Application.Resources>
+    -->
+
+    <!--
+        Four panes as one geometry, in draw order:
+          - top-left pane    (rounded outer corner -> spine top)
+          - bottom-left pane (rounded outer corner -> spine bottom)
+          - top-right pane   (quarter-disc -> upper bump)
+          - bottom-right pane (quarter-disc -> lower bump)
+    -->
+    <Geometry x:Key="StartIconGeometry">
+        M0,44 L0,17 Q0,0 17,0 L44,0 L44,44 Z
+        M0,56 L44,56 L44,100 L17,100 Q0,100 0,83 Z
+        M56,44 L56,0 A44,44 0 0 1 100,44 Z
+        M56,56 L100,56 A44,44 0 0 1 56,100 Z
+    </Geometry>
+
+    <DrawingImage x:Key="StartIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFFFFFFF"
+                             Geometry="{StaticResource StartIconGeometry}" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

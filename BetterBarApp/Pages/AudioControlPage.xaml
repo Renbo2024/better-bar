@@ -1,0 +1,142 @@
+<Page x:Class="BetterBarApp.Pages.AudioControlPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="Audio Control">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Audio Control" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <TextBlock Text="Buttons" FontWeight="SemiBold" Margin="2,0,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon Speaker224}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show speaker" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show the speaker icon, level meter, and volume flyout."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowSpeakerBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Mic24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show microphone" VerticalAlignment="Center"/>
+                            <TextBlock Text="Show the microphone icon, level meter, and input flyout."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="ShowMicBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon FontIncrease24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Icon size (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Size of the speaker / microphone glyphs."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="IconSizeBox" Minimum="8" Maximum="48" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <TextBlock Text="Spacing" FontWeight="SemiBold" Margin="2,12,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon ResizeLarge24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Outer horizontal margin (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Empty space kept to the left and right of the icons."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="HMarginBox" Minimum="0" Maximum="60" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon AutoFitWidth24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Space between the two icons (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Gap between the speaker and microphone."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="IconSpacingBox" Minimum="0" Maximum="60" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon ArrowAutofitHeight24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Space between icon and meter (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Vertical gap between each icon and the level meter below it."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="GapBox" Minimum="0" Maximum="40" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <TextBlock Text="Level meter" FontWeight="SemiBold" Margin="2,12,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon LineThickness24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Meter thickness (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Height of the left/right level bar drawn under each icon."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="MeterThicknessBox" Minimum="1" Maximum="20" Step="1" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Color24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Meter color" VerticalAlignment="Center"/>
+                            <TextBlock Text="Color of the level meter; Default uses the theme accent color."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:ColorPickerButton x:Name="MeterColorPicker" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <TextBlock Text="Meter response" FontWeight="SemiBold" Margin="2,12,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon DrawText24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Smoothing (%)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Higher values make the bar glide and damp jitter; 0 reacts instantly."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="SmoothingBox" Minimum="0" Maximum="100" Step="5" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon AutoFitWidth24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Auto-scale to recent peaks" VerticalAlignment="Center"/>
+                            <TextBlock Text="Continuously fit the meter's range to recent peak levels so quiet and loud activity both show. Left and right share one scale."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="AutoScaleBox" Click="Changed"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon TopSpeed24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Auto-scale speed (%)" VerticalAlignment="Center"/>
+                            <TextBlock Text="How quickly the range re-adapts after a loud peak (only when auto-scale is on)."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="ScaleSpeedBox" Minimum="0" Maximum="100" Step="5" MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

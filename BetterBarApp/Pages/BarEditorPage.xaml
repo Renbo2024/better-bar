@@ -1,0 +1,136 @@
+<Page x:Class="BetterBarApp.Pages.BarEditorPage"
+      x:Name="Root"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="Bar">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back + title -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+            <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                       Content="Bars" Click="Back_Click" Margin="0,0,12,0"/>
+        </StackPanel>
+        <TextBlock Grid.Row="1" x:Name="TitleText" Text="Bar"
+                   FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- ── Basics ── -->
+                <TextBlock Text="General" FontWeight="SemiBold" Margin="2,0,0,6"/>
+                <ui:CardControl Icon="{ui:SymbolIcon Rename24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Name" VerticalAlignment="Center"/>
+                            <TextBlock Text="A label for this bar definition, shown in the bars list."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:TextBox x:Name="NameBox" MinWidth="240" TextChanged="NameBox_TextChanged"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon ResizeLarge24}" Margin="0,0,0,16">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Height" FontWeight="SemiBold"/>
+                            <TextBlock Text="Bar thickness in pixels (8–300)."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="HeightBox" Minimum="8" Maximum="300" Step="1"
+                                  MinWidth="120" ValueChanged="HeightBox_ValueChanged"/>
+                </ui:CardControl>
+
+                <!-- ── Placements ── -->
+                <DockPanel Margin="2,0,0,6">
+                    <TextBlock Text="Placements" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <ui:Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                               Icon="{ui:SymbolIcon Add24}" Content="Add placement"
+                               Click="AddPanel_Click"/>
+                </DockPanel>
+                <TextBlock Text="Each placement renders this bar on one monitor edge. A placement whose screen isn't present simply doesn't show."
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                           TextWrapping="Wrap" Margin="2,0,0,8"/>
+                <ItemsControl x:Name="PanelsList" Margin="0,0,0,16">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:Card Margin="0,0,0,6" Padding="14,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox Grid.Column="0" Margin="0,0,8,0"
+                                              ItemsSource="{Binding MonitorOptions, ElementName=Root}"
+                                              DisplayMemberPath="Label"
+                                              SelectedValuePath="Number"
+                                              SelectedValue="{Binding MonitorNumber, Mode=TwoWay}"
+                                              SelectionChanged="Placement_Changed"/>
+                                    <ComboBox Grid.Column="1" Margin="0,0,12,0"
+                                              ItemsSource="{Binding PositionOptions, ElementName=Root}"
+                                              SelectedItem="{Binding Position, Mode=TwoWay}"
+                                              SelectionChanged="Placement_Changed"/>
+                                    <ui:ToggleSwitch Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0"
+                                                     Content="On"
+                                                     IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                                     Click="EnableToggle_Click"/>
+                                    <ui:Button Grid.Column="3" Appearance="Transparent"
+                                               Icon="{ui:SymbolIcon Delete24}"
+                                               Click="RemovePanel_Click"/>
+                                </Grid>
+                            </ui:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- ── Items ── -->
+                <DockPanel Margin="2,0,0,6">
+                    <TextBlock Text="Items" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <ui:Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                               Icon="{ui:SymbolIcon Add24}" Content="Add item"
+                               Click="AddItem_Click"/>
+                </DockPanel>
+                <ItemsControl x:Name="ItemsList" AllowDrop="True"
+                              PreviewMouseLeftButtonDown="Items_PreviewDown"
+                              PreviewMouseMove="Items_PreviewMove"
+                              DragOver="Items_DragOver" Drop="Items_Drop">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:CardControl Margin="0,0,0,6" MouseDoubleClick="Item_DoubleClick">
+                                <ui:CardControl.Header>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Description}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   FontSize="12" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </ui:CardControl.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon ArrowUp24}"
+                                               Click="MoveItemUp_Click" ToolTip="Move up"/>
+                                    <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon ArrowDown24}"
+                                               Click="MoveItemDown_Click" ToolTip="Move down" Margin="0,0,8,0"/>
+                                    <ui:Button Icon="{ui:SymbolIcon Edit24}" Content="Edit"
+                                               Click="EditItem_Click" Margin="0,0,8,0"/>
+                                    <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon Copy24}"
+                                               Click="CloneItem_Click" ToolTip="Clone" Margin="0,0,8,0"/>
+                                    <ui:Button Appearance="Transparent" Icon="{ui:SymbolIcon Delete24}"
+                                               Click="RemoveItem_Click"/>
+                                </StackPanel>
+                            </ui:CardControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,14 @@
+<UserControl x:Class="BetterBarApp.Controls.WeatherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch"
+             Background="Transparent" Cursor="Hand"
+             ToolTip="{x:Null}"
+             MouseLeftButtonUp="OnClick">
+    <!-- Title sits across the top; the weather sections (Current, optional Forecast) are built
+         horizontally below it in code from the WeatherItem. -->
+    <StackPanel x:Name="Root" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock x:Name="TitleText" TextAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel x:Name="Sections" Orientation="Horizontal" HorizontalAlignment="Center"/>
+    </StackPanel>
+</UserControl>

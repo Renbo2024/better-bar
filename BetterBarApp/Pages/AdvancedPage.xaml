@@ -1,0 +1,70 @@
+<Page x:Class="BetterBarApp.Pages.AdvancedPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Advanced">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Advanced"
+                   FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+        <ui:CardControl Grid.Row="1" Icon="{ui:SymbolIcon Power24}" Margin="0,0,0,8">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Start BetterBar when I sign in" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                               Text="Launch BetterBar automatically at Windows sign-in for the current user."/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch x:Name="StartupToggle" Click="Startup_Toggled"/>
+        </ui:CardControl>
+
+        <ui:CardControl Grid.Row="2" Icon="{ui:SymbolIcon Dock24}" Margin="0,0,0,8">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Hide the Windows taskbar" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                               Text="Hide the native Explorer taskbar(s) while BetterBar runs. Turning this off lets the Windows taskbar show alongside BetterBar. Either way, the taskbar is restored when BetterBar exits."/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch x:Name="HideTaskbarToggle" Click="HideTaskbar_Toggled"/>
+        </ui:CardControl>
+
+        <ui:CardControl Grid.Row="3" Icon="{ui:SymbolIcon ArrowSwap24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Import / export configuration" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                               Text="Save any combination of themes and bar definitions to a file, or import them back. Imports warn before overwriting anything you already have."/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <StackPanel Orientation="Horizontal">
+                <ui:Button Icon="{ui:SymbolIcon ArrowUpload24}" Content="Export…" Click="Export_Click" Margin="0,0,8,0"/>
+                <ui:Button Icon="{ui:SymbolIcon ArrowDownload24}" Content="Import…" Click="Import_Click"/>
+            </StackPanel>
+        </ui:CardControl>
+
+        <ui:CardControl Grid.Row="4" Icon="{ui:SymbolIcon ArrowSync24}" Margin="0,8,0,0">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Updates" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock x:Name="UpdateStatus" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"
+                               Text="Check GitHub for a newer version of BetterBar."/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:Button x:Name="UpdateButton" Icon="{ui:SymbolIcon ArrowDownload24}"
+                       Content="Check for updates" Click="Update_Click"/>
+        </ui:CardControl>
+    </Grid>
+</Page>

@@ -1,0 +1,155 @@
+<Window x:Class="BetterBarApp.Windows.StartMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="False"
+        Background="{DynamicResource StartMenuBg}"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Width="340"
+        SizeToContent="Height"
+        Topmost="True"
+        Deactivated="Window_Deactivated">
+    <!--
+        AllowsTransparency MUST be False — transparent (layered) WPF windows
+        silently break mouse input routing for nested controls (RetroBar's
+        normal-mode taskbar uses the same approach). Rounded corners and shadow
+        would require transparency, so we go for a flat themed rectangle instead.
+    -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <!-- Taskbar implicit styles (WPF-UI is the app default; the menu opts back in). -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Win11Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        <!-- Shared by the two cross-fade result layers (A/B). -->
+        <DataTemplate x:Key="SearchResultTemplate">
+            <Grid>
+                <TextBlock x:Name="Hdr" Text="{Binding Text}"
+                           FontSize="11" FontWeight="SemiBold" Opacity="0.6"
+                           Foreground="{DynamicResource TaskBtnFg}"
+                           Margin="6,8,0,2" Visibility="Collapsed"/>
+                <Border x:Name="ItemBd" Background="Transparent" CornerRadius="4"
+                        MouseLeftButtonUp="ResultItem_Click"
+                        MouseMove="ResultItem_Hover">
+                    <!-- Same icon/text formatting as the basic icon list. -->
+                    <StackPanel Orientation="Horizontal">
+                        <Grid Width="{Binding IconSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                              Height="{Binding IconSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                              Margin="{Binding IconMargin, RelativeSource={RelativeSource AncestorType=Window}}"
+                              VerticalAlignment="Center">
+                            <!-- Category glyph until the real icon loads, then the icon. -->
+                            <TextBlock x:Name="Glyph" Text="{Binding Glyph}"
+                                       FontSize="{Binding IconSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Foreground="{DynamicResource TaskBtnFg}"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Visibility="Collapsed"/>
+                            <Image x:Name="Img" Source="{Binding Icon}"
+                                   Stretch="Uniform" SnapsToDevicePixels="True"/>
+                        </Grid>
+                        <TextBlock Text="{Binding Text}"
+                                   FontSize="{Binding TextSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   MaxWidth="{Binding MaxTextWidth, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   Margin="{Binding TextMargin, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   Foreground="{DynamicResource TaskBtnFg}"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsHeader}" Value="True">
+                    <Setter TargetName="Hdr"    Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="ItemBd" Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                    <Setter TargetName="ItemBd" Property="Background"
+                            Value="{DynamicResource TaskBtnActiveBg}"/>
+                </DataTrigger>
+                <!-- No real icon yet → show the category glyph instead. -->
+                <DataTrigger Binding="{Binding Icon}" Value="{x:Null}">
+                    <Setter TargetName="Glyph" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="Img"   Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border BorderBrush="{DynamicResource StartMenuBorder}"
+            BorderThickness="1"
+            Padding="8">
+        <DockPanel>
+
+            <!-- Search box at the BOTTOM (focused on open) -->
+            <TextBox DockPanel.Dock="Bottom"
+                     x:Name="SearchBox"
+                     Style="{StaticResource StartMenuSearchBox}"
+                     MinHeight="36"
+                     Padding="10,0"
+                     VerticalContentAlignment="Center"
+                     Margin="0,8,0,0"/>
+
+            <!-- Fill: the static icon list, OR (while typing) the search results -->
+            <Grid>
+                <ListBox x:Name="IconList"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ItemContainerStyle="{StaticResource StartMenuListItem}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         VirtualizingStackPanel.IsVirtualizing="False"
+                         SelectionChanged="IconList_SelectionChanged"
+                         AllowDrop="True"
+                         DragOver="IconList_DragOver"
+                         Drop="IconList_Drop"
+                         PreviewMouseLeftButtonDown="IconList_LeftDown"
+                         PreviewMouseLeftButtonUp="IconList_LeftUp"
+                         PreviewMouseMove="IconList_MouseMove">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Icon}"
+                                       Width="{Binding IconSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Height="{Binding IconSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Margin="{Binding IconMargin, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Stretch="Uniform"
+                                       VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding DisplayName}"
+                                           FontSize="{Binding TextSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                                           MaxWidth="{Binding MaxTextWidth, RelativeSource={RelativeSource AncestorType=Window}}"
+                                           Margin="{Binding TextMargin, RelativeSource={RelativeSource AncestorType=Window}}"
+                                           Foreground="{DynamicResource TaskBtnFg}"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- Search results: two overlapping layers (A/B) that cross-fade so a
+                     new result set never shows an empty frame (see BuildResultRows). -->
+                <ScrollViewer x:Name="ResultsScrollerA" Visibility="Collapsed"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="ResultsListA"
+                                  ItemTemplate="{StaticResource SearchResultTemplate}"/>
+                </ScrollViewer>
+                <ScrollViewer x:Name="ResultsScrollerB" Visibility="Collapsed"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="ResultsListB"
+                                  ItemTemplate="{StaticResource SearchResultTemplate}"/>
+                </ScrollViewer>
+
+                <!-- Cold-start state shown if the user types before the index is ready -->
+                <TextBlock x:Name="LoadingText" Visibility="Collapsed"
+                           Text="BetterBar is Loading"
+                           Foreground="{DynamicResource TaskBtnFg}" Opacity="0.7"
+                           HorizontalAlignment="Center" VerticalAlignment="Top"
+                           Margin="0,16" FontSize="13"/>
+            </Grid>
+
+        </DockPanel>
+    </Border>
+</Window>

@@ -1,0 +1,13 @@
+<UserControl x:Class="BetterBarApp.Controls.SeparatorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Stretch">
+    <!-- A 1px vertical line, centered, inset vertically from the panel edges.
+         Width / visibility are set in code from the SeparatorItem options. -->
+    <Border x:Name="Line"
+            Width="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Margin="0,6"
+            Background="{DynamicResource PanelSeparator}"/>
+</UserControl>

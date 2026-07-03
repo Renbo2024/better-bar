@@ -1,0 +1,39 @@
+<Page x:Class="BetterBarApp.Pages.AppearancePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Appearance">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Appearance"
+                   FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+        <ui:CardControl Grid.Row="1" Icon="{ui:SymbolIcon Color24}" Margin="0,0,0,8">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Theme" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock Text="Colour palette applied to every bar and panel."
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="ThemeSelector" MinWidth="200"
+                      SelectionChanged="ThemeSelector_SelectionChanged"/>
+        </ui:CardControl>
+
+        <ui:CardControl Grid.Row="2" Icon="{ui:SymbolIcon Edit24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Theme editor" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock Text="Edit colours, or clone / import / export themes."
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:Button Content="Open editor" Icon="{ui:SymbolIcon Color24}" Click="OpenEditor_Click"/>
+        </ui:CardControl>
+    </Grid>
+</Page>

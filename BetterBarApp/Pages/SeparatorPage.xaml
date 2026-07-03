@@ -1,0 +1,56 @@
+<Page x:Class="BetterBarApp.Pages.SeparatorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:BetterBarApp.Controls"
+      Title="Separator">
+    <Grid Margin="42,12,42,24" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Button Grid.Row="0" Appearance="Transparent" Icon="{ui:SymbolIcon ArrowLeft24}"
+                   Content="Back" Click="Back_Click" Margin="0,0,0,8" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Separator" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+        <ScrollViewer x:Name="PageScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Ruler24}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Margin (px)" VerticalAlignment="Center"/>
+                            <TextBlock Text="Empty space on each side of the separator."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <controls:NumericBox x:Name="MarginBox" Minimum="0" Maximum="100" Step="1"
+                                  MinWidth="120" ValueChanged="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon LineHorizontal120}" Margin="0,0,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Show separator line" VerticalAlignment="Center"/>
+                            <TextBlock Text="Draw the divider line; off makes it an invisible spacer."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="VisibleBox" Click="Changed"/>
+                </ui:CardControl>
+
+                <ui:CardControl Icon="{ui:SymbolIcon ArrowExpand24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="Grow to fill remaining space" VerticalAlignment="Center"/>
+                            <TextBlock Text="Let this separator expand to push later items to the far edge."
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch x:Name="GrowBox" Click="Changed"/>
+                </ui:CardControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
